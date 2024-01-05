@@ -71,7 +71,7 @@ function onLoadImg(x, y) {
   c.width = width;
   c.height = height;
   c.className = "border";
-  ctx.font = size + "px Comic Sans MS";
+  ctx.font = size + "px Calibri MS"; //CHANGED HERE THE FONT STYLE
   ctx.textAlign = "center";
   ctx.fillStyle = color;
   ctx.drawImage(image, 0, 0, width, height);
