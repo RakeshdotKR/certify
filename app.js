@@ -305,14 +305,51 @@ function addNames(input) {
  }
 }
 
-function parseData(data){
-  let csvData = [];
-  let lbreak = data.split("\n");
-  lbreak.forEach(res => {
-      csvData.push(res.split(","));
-  });
-  return csvData;
+// function parseData(data){
+//   let csvData = [];
+//   let lbreak = data.split("\n");
+//   lbreak.forEach(res => {
+//       csvData.push(res.split(","));
+//   });
+//   return csvData;
+// }
+
+function parseData(data) {
+    let csvData = [];
+    let lbreak = data.split("\n");
+
+    lbreak.forEach(res => {
+        let row = [];
+        let inQuotes = false;
+        let value = '';
+
+        for (let i = 0; i < res.length; i++) {
+            let char = res[i];
+
+            if (char === '"' && inQuotes) {
+                // Handle the closing quote for a quoted value
+                inQuotes = false;
+            } else if (char === '"' && !inQuotes) {
+                // Handle the opening quote for a quoted value
+                inQuotes = true;
+            } else if (char === ',' && !inQuotes) {
+                // If we hit a comma and we are not inside quotes, push the value and reset it
+                row.push(value.trim());
+                value = '';
+            } else {
+                // Otherwise, accumulate the characters into value
+                value += char;
+            }
+        }
+
+        // Push the last value of the row (since the loop doesn't handle the last one)
+        row.push(value.trim());
+        csvData.push(row);
+    });
+
+    return csvData;
 }
+
 
 function saveFile() {
   c.toBlob(function (blob) {
